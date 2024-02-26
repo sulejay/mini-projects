@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retrieve Code</title>
+</head>
+<body>
+    <ul>
+            <li><a href="./adddetails.html">change your details</a></li>
+            <li><a href="./login.html">login</a></li>
+            <li><a href="./index.html">home</a></li>
+    </ul>
+    <h2>You will retrieve a code to reset password</h2>
+    <div class="myform">
+        <input type="text" class="email" placeholder="Email address"><br>
+        <button class="getcode">Get The Code</button>
+        <br>
+        <input type="text" class="code" placeholder="Enter the code"><br>
+        <br>
+       <div class="internal" style="display: none">
+        <input type="password" class="password" placeholder="New password">
+        <br>
+        <input type="password" class="confpass" placeholder="Confirm Password"><br>
+        <button class="done">Reset Password</button>
+       </div>
+    </div>
+    <script src="./jquery.js"></script>
+    <script>
+        const code = document.querySelector('.code');
+        const internal = $('.internal')
+        code.addEventListener('input', function(){
+            if(code.value.length > 4){
+internal.css({
+    "display":"block"
+})
+            }else{
+                internal.css({
+                    "display": "none"
+                })
+            }
+        })
+
+        $('.getcode').click(function(){
+            var email = $('.email').val();
+            var formData = new FormData();
+            formData.append("email", email);
+            $.ajax({
+                type:"POST",
+                url:"http://localhost/passwordretrieval-main/jamesGosling/getcode.php",
+                processData: false,
+                cache: false,
+                contentType: false,
+                data: formData,
+                success: (data)=>{
+                    console.log(data);
+                    if(data == "done"){
+                        alert("check your email for the code")
+                    }else{
+                        alert(data)
+                    }
+                }
+            })
+        })
+        $('.done').click(()=>{
+            var email = $('.email').val();
+            var code = $('.code').val();
+            var password = $('.password').val();
+            var confpass = $('.confpass').val();
+            if(password!=confpass){
+                alert("passwords must be the same")
+            }else{
+                var formData = new FormData();
+                formData.append("email", email);
+                formData.append("code", code);
+                formData.append("password", password);
+                $.ajax({
+                    type:"POST",
+                    url:"http://localhost/passwordretrieval-main/jamesGosling/changepw.php",
+                    processData: false,
+                    cache: false,
+                    contentType: false,
+                    data: formData,
+                    success: function(data){
+                        console.log(data)
+                        if(data == "done"){
+                            window.location = "./login.html"
+                        }
+                        else{
+                            alert(data)
+                        }
+                    }
+                })
+            }
+        })
+    </script>
+</body>
+</html>

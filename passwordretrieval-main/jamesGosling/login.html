@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <a href="http://localhost/passwordretrieval-main/jamesGosling/index.html">home</a>
+    <div class="login">
+        <input type="text" class="email" placeholder="Email address"><br>
+        <input type="password" class="password" placeholder="Enter your password"><br>
+        <button class="done">Login</button><br>
+        <a href="./retrieve.html">forgot password</a>
+    </div>
+    <script src="./jquery.js"></script>
+    <script>
+        var email = $('.email'),
+        password = $('.password');
+        $('.done').click(()=>{
+            if(email.val().length<5 &&  password.val().length<4){
+                alert("please fill in correctly");
+            }else{
+                var formData = new FormData();
+                formData.append("email", email.val());
+                formData.append("password", password.val());
+
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost/passwordretrieval-main/jamesGosling/login.php",
+                    processData: false,
+                    cache: false,
+                    contentType: false,
+                    data: formData, 
+                    success: function(data){
+                        if(data == "success"){
+                            window.location = "./index.html"
+                        }else{
+                            alert("bad credentials")
+                        }
+                    }
+                })
+            }
+        })
+    </script>
+</body>
+</html>

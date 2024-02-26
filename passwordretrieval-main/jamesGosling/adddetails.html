@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Details</title>
+</head>
+<body>
+    <li><a href="./login.html">login</a></li>
+    <li><a href="./index.html">home</a></li>
+    <div class="details">
+        <input type="text" class="phonenumber" placeholder="Phone Number"><br>
+        <input type="text" class="address" placeholder="Hpme Address"><br>
+        <input type="text" class="regnumber" placeholder="Registration Number">
+        <br>
+        <button class="done">Done</button>
+    </div>
+    <script src="./jquery.js"></script>
+    <script>
+        var phone = $('.phonenumber');
+        var address = $('.address')
+        var regno = $('.regnumber')
+
+        $('.done').click(function(){
+            var formData = new FormData();
+            formData.append("phonenumber", phone.val());
+            formData.append("address", address.val());
+            formData.append("regnumber", regno.val());
+             $.ajax({
+                type: "POST",
+                url: "http://localhost/passwordretrieval-main/jamesGosling/adddetails.php",
+                processData: false,
+                cache: false,
+                contentType: false,
+                data: formData,
+                success: function (data) {
+                    if(data == "login"){
+                        window.location = "http://localhost/passwordretrieval-main/jamesGosling/login.html"
+                    }else if(data == "done"){
+                         window.location = "http://localhost/passwordretrieval-main/jamesGosling/index.html"
+                    }
+                }
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+</head>
+<body>
+    <ul>
+        <li><a href="./adddetails.html">change your details</a></li>
+        <li><a href="./login.html">login</a></li>
+    </ul>
+    <h1>Search a person</h1>
+    <br>
+    <input type="text" class="regno" placeholder="Registration Number"><br>
+    <button class="search">Search</button>
+    <div class="deets"></div>
+    <script src="./jquery.js"></script>
+    <script>
+        var regno = $('.regno');
+        $('.search').click(function(){
+              var formData = new FormData();
+            formData.append("regno", regno.val());
+
+            $.ajax({
+                type: "POST",
+                url: "http://localhost/passwordretrieval-main/jamesGosling/search.php",
+                processData: false,
+                cache: false,
+                contentType: false,
+                dataType:'json',
+                data: formData,
+                success: function (data) {
+                   if(data.address == undefined){
+                      alert("no one found")
+                   }else{
+                     var inside = `Email: ${data.email}<br>
+                    Address: ${data.address}<br> Phone Number: ${data.phonenumber}`;
+                    $('.deets').html("")
+                       $('.deets').append(inside);
+                   }
+                }
+            })
+        })
+    </script>
+</body>
+</html>
